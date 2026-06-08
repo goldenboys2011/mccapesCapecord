@@ -36,6 +36,7 @@ async def load_extensions():
     client.supabase = supabase
     await client.load_extension("cogs.checkCode")
     await client.load_extension("cogs.capeRoles")
+    await client.load_extension("cogs.vouches")
 
 @client.event
 async def setup_hook():

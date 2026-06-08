@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import time
 import re
-import vouch
+import api.vouch as vouch
 import datetime
 
 def is_user_mention(text: str):
@@ -24,10 +24,11 @@ class Vouch(commands.Cog):
 
         message = ctx.content
         senderId = ctx.author.id
+        args = message.split(" ")
 
-        if message.startswith("+vouch"):
+        if args[0] == "+vouch":
             print(f"Vouch listener fired: {ctx.id}")
-            args = message.split(" ")
+            
 
             if len(args) == 1:
                 embed = discord.Embed(
