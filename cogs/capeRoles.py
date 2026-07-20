@@ -5,6 +5,8 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 
+LOGINGCHANNEL = 1528767064356032533
+
 capesRoles = {
     "2011":             1391249239664758836,
     "2012":             1391253576982204498,
@@ -46,7 +48,9 @@ class CapeRoles(commands.Cog):
         await interaction.response.defer()
         try:
             response = requests.get(f"https://capes.me/api/user/{java_username}", headers=headers)
-
+            
+            # THOSE NESTED IF STATEMENTS ARE KILLING ME :sob: GOTTA FIX TS :pray:
+            # golden is handsome <3
             if not response == None:
                 discordResponse = requests.get(f"https://capes.me/{java_username}", headers=headers)
 
@@ -75,7 +79,17 @@ class CapeRoles(commands.Cog):
                             timestamp=datetime.datetime.now()
                         )
                         embed.set_footer(text='\u200b',icon_url=interaction.user.display_avatar.url)
-                        await interaction.followup.send(embed=embed)
+                        await interaction.followup.send(embed=embed, ephemeral=True)
+
+                        embed = discord.Embed(
+                            title="User used CapeRoles",
+                            description=f"{interaction.user.mention} has used the CapeRoles command! Username they used: {java_username}",
+                            color=0x2ECC71,
+                            timestamp=datetime.datetime.now()
+                        )
+                        embed.set_footer(text='\u200b',icon_url=interaction.user.display_avatar.url)
+                        await self.bot.get_channel(LOGINGCHANNEL).send(embed=embed)
+
                     else:
                         embed = discord.Embed(
                             title="Discord not matching with profile",
