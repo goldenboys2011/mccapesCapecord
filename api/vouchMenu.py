@@ -2,18 +2,27 @@ import discord
 from api.createVouchEmbed import createVouchEmbed
 
 class VouchSelect(discord.ui.Select):
-    def __init__(self, vouchData):
+    def __init__(self, vouchData, bot):
         self.vouchData = vouchData
+        self.bot = bot
         print(self.vouchData)
         options = []
 
-        for vouch in self.vouchData[:25]:  # Discord limit
+        for vouch in self.vouchData[:24]:  # Discord limit
             options.append(
                 discord.SelectOption(
                     label=f"#{vouch['id']}",
                     description=f"Voucher: {vouch['voucher']}"
                 )
             )
+        
+        # if len(self.vouchData) > 24:
+        #     options.append(
+        #         discord.SelectOption(
+        #             label="Next Page",
+        #             description="There are more vouches than can be displayed here."
+        #         )
+        #     )
 
         super().__init__(
             placeholder="Select a vouch...",
@@ -23,6 +32,14 @@ class VouchSelect(discord.ui.Select):
         )
 
     async def callback(self, interaction: discord.Interaction):
+
+        # if self.values[0] == "Next Page":
+        #     await interaction.response.send_message(
+        #         "Pagination is not implemented yet.",
+        #         ephemeral=True
+        #     )
+        #     return
+
         selected_id = int(self.values[0].replace("#", ""))
 
         vouch = next(
@@ -38,14 +55,14 @@ class VouchSelect(discord.ui.Select):
             return
 
         await interaction.response.send_message(
-            embed=createVouchEmbed(vouch),
+            embed=createVouchEmbed(vouch, self.bot),
             ephemeral=True
         )
 
 class VouchView(discord.ui.View):
-    def __init__(self, vouchData):
+    def __init__(self, vouchData, bot):
         super().__init__(timeout=300)
 
         self.add_item(
-            VouchSelect(vouchData)
+            VouchSelect(vouchData, bot)
         )

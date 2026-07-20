@@ -3,7 +3,7 @@ from discord.ext import commands
 import re
 import datetime
 from api.getVouches import getVouches
-from api.vouchMenu import VouchView
+from api.vouchPageinatorMenu import VouchPageinatorView
 
 def is_user_mention(text: str):
     return re.fullmatch(r"<@!?\d+>", text) is not None
@@ -15,11 +15,20 @@ async def sendDm(client, userId, msg="", embed=""):
 def createEmbed(vouches, userId, targetUser):
     vouchData = vouches
 
-    total_vouches = len(vouchData)
+    total_vouches = sum(
+        1 for v in vouchData
+        if not v.get("is_unvouch", False)
+    ) - sum(
+        1 for v in vouchData
+        if v.get("is_unvouch", False)
+    )
 
     total_approved = sum(
         1 for v in vouchData
-        if v.get("verified", False)
+        if v.get("verified", False) and not v.get("is_unvouch", False)
+    ) - sum(
+        1 for v in vouchData
+        if v.get("verified", False) and v.get("is_unvouch", False)
     )
 
     embed = discord.Embed(
@@ -99,15 +108,17 @@ class Vouches(commands.Cog):
                         senderId,
                         targetUser
                     ),
-                    view=VouchView(vouches)
+                    view=VouchPageinatorView(vouches, client)
                 )
+
+                return
 
             elif is_user_mention(args[1]):
                 mentionId = int(args[1].replace("<","").replace("@","").replace("!","").replace(">",""))
                 vouches = getVouches(mentionId, client.supabase)[1].data
                 targetUser = await client.fetch_user(mentionId)
                 if vouches == []:
-                    await ctx.reply(buildNoVouchesEmbed())
+                    await ctx.reply(embed=buildNoVouchesEmbed(targetUser))
                     return
                 await ctx.reply(
                     embed=createEmbed(
@@ -115,8 +126,10 @@ class Vouches(commands.Cog):
                         mentionId,
                         targetUser
                     ),
-                    view=VouchView(vouches)
+                    view=VouchPageinatorView(vouches, client)
                 )
+
+                return
 
             else:
                 embed = discord.Embed(
@@ -126,6 +139,8 @@ class Vouches(commands.Cog):
                     timestamp=datetime.datetime.now()
                 )
                 await ctx.reply(embed=embed)
+
+                return
 
 
 async def setup(bot):

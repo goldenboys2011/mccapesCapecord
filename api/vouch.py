@@ -1,13 +1,15 @@
 import time
 
-def submitVouch(voucher, vouchee, message, supabase):
+def submitVouch(voucher, vouchee, message, supabase, is_unvouch=False, verified=False):
     try:
         response = (
             supabase.schema("mccapes").table("vouches")
             .insert({
                 "vouchee": vouchee,
                 "voucher": voucher,
-                "message": message
+                "message": message,
+                "is_unvouch": is_unvouch,
+                "verified": verified
             })
             .execute()
         )

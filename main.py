@@ -4,6 +4,8 @@ from supabase import create_client, Client
 import discord
 from discord.ext import commands
 from cachetools import TTLCache
+from discord import app_commands
+from cogs.groups import admin_group
 
 load_dotenv()
 
@@ -25,21 +27,32 @@ GUILD_ID = 1378519415565320212
 @client.event
 async def on_ready():
     # await tree.sync()
-
     guild = discord.Object(id=GUILD_ID)
+    tree.clear_commands(guild=guild)
+    # tree.clear_commands(guild=None)
+
     tree.copy_global_to(guild=guild)
     await tree.sync(guild=guild)
+
     print("READY")
+    
 
 async def load_extensions():
     await client.load_extension("cogs.vouch")
-    client.supabase = supabase
     await client.load_extension("cogs.checkCode")
     await client.load_extension("cogs.capeRoles")
     await client.load_extension("cogs.vouches")
-
+    await client.load_extension("cogs.getVouch")
+    await client.load_extension("cogs.aprooveVouch")
+    await client.load_extension("cogs.deleteVouch")
+    await client.load_extension("cogs.unVouch")
+    await client.load_extension("cogs.addVouch")
+    
+    
 @client.event
 async def setup_hook():
+    client.supabase = supabase
     await load_extensions()
     
+
 client.run(TOKEN)

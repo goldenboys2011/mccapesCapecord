@@ -1,7 +1,7 @@
 import discord
 import datetime
 
-def createVouchEmbed(vouch):
+def createVouchEmbed(vouch, bot):
     embed = discord.Embed(
         title=f"Vouch #{vouch['id']}",
         color=0x2ECC71,
@@ -28,8 +28,18 @@ def createVouchEmbed(vouch):
 
     embed.add_field(
         name="Verified?",
-        value="✅ True" if vouch["verified"] else "❌ False",
+        value="True" if vouch["verified"] else "False",
         inline=False
+    )
+
+    embed.add_field(
+        name="Negative?",
+        value="True" if vouch["is_unvouch"] else "False",
+        inline=False
+    )
+
+    embed.set_footer(
+        text='\u200b',icon_url=bot.get_user(vouch['vouchee']).display_avatar.url
     )
 
     return embed
