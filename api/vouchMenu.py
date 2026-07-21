@@ -15,14 +15,6 @@ class VouchSelect(discord.ui.Select):
                     description=f"Voucher: {vouch['voucher']}"
                 )
             )
-        
-        # if len(self.vouchData) > 24:
-        #     options.append(
-        #         discord.SelectOption(
-        #             label="Next Page",
-        #             description="There are more vouches than can be displayed here."
-        #         )
-        #     )
 
         super().__init__(
             placeholder="Select a vouch...",
@@ -32,14 +24,6 @@ class VouchSelect(discord.ui.Select):
         )
 
     async def callback(self, interaction: discord.Interaction):
-
-        # if self.values[0] == "Next Page":
-        #     await interaction.response.send_message(
-        #         "Pagination is not implemented yet.",
-        #         ephemeral=True
-        #     )
-        #     return
-
         selected_id = int(self.values[0].replace("#", ""))
 
         vouch = next(

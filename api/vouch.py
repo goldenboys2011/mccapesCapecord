@@ -21,7 +21,7 @@ def submitVouch(voucher, vouchee, message, supabase, is_unvouch=False, verified=
 
     except Exception as e:
         # print("ERROR inserting vouch:", e)
-        return {False, e}
+        return (False, e)
 
 whoVouchedWhoWhen = {
     

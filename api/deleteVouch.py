@@ -11,8 +11,10 @@ def deleteVouchById(ID, supabase):
         return (True, response)
 
     except Exception as e:
-        return {False, e}
+        return (False, e)
     
+
+# DELETED ALL USERS VOUCH, KINDA DANGEROUS
 def deleteVouchesByUserId(userId, supabase):
     try:
         response = (
@@ -26,4 +28,4 @@ def deleteVouchesByUserId(userId, supabase):
         return (True, response)
 
     except Exception as e:
-        return {False, e}
+        return (False, e)

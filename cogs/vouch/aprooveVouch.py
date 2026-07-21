@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
 from discord import app_commands
-from api.approveVouch import aprooveVouchById
+from api.approveVouch import approveVouchById
 import datetime
-#from cogs.groups import admin_group
+from cogs.groups import admin_group
 
 class approveVouch(commands.Cog):
     def __init__(self, bot):
@@ -21,7 +21,7 @@ class approveVouch(commands.Cog):
         try:
 
             client = self.bot
-            result = aprooveVouchById(id, client.supabase, aproove=aproove)
+            result = approveVouchById(id, client.supabase, aproove=aproove)
 
             if result[1].data == []:
                 await interaction.followup.send("Couldn't find/approve a vouch with that ID.", ephemeral=True)

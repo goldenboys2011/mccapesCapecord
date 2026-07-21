@@ -1,6 +1,6 @@
 import discord
 
-from api.approveVouch import aprooveVouchById
+from api.approveVouch import approveVouchById
 from api.deleteVouch import deleteVouchById
 
 
@@ -21,7 +21,7 @@ class vouchStaffButtonsView(discord.ui.View):
         button: discord.ui.Button
     ):
         
-        aprooveVouchById(self.vouchId, self.supabase)
+        approveVouchById(self.vouchId, self.supabase)
 
         button.disabled = True
 

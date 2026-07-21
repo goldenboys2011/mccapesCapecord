@@ -1,4 +1,4 @@
-def aprooveVouchById(ID, supabase, aproove=True):
+def approveVouchById(ID, supabase, aproove=True):
     try:
         response = (
             supabase.schema("mccapes").table("vouches")
@@ -11,4 +11,4 @@ def aprooveVouchById(ID, supabase, aproove=True):
         return (True, response)
 
     except Exception as e:
-        return {False, e}
+        return (False, e)

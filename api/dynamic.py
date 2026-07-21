@@ -1,9 +1,9 @@
-def getVouches(userId, supabase):
+def getDynamic(ID, supabase):
     try:
         response = (
-            supabase.schema("mccapes").table("vouches")
+            supabase.schema("mccapes").table("dynamic")
             .select("*")
-            .eq("vouchee", userId)
+            .eq("id", ID)
             .execute()
         )
 

@@ -12,4 +12,4 @@ def getVoucheByID(ID, supabase):
 
     except Exception as e:
         # print("ERROR inserting vouch:", e)
-        return {False, e}
+        return (False, e)

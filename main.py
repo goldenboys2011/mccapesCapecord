@@ -38,16 +38,25 @@ async def on_ready():
     
 
 async def load_extensions():
-    await client.load_extension("cogs.vouch")
-    await client.load_extension("cogs.checkCode")
-    await client.load_extension("cogs.capeRoles")
-    await client.load_extension("cogs.vouches")
-    await client.load_extension("cogs.getVouch")
-    await client.load_extension("cogs.aprooveVouch")
-    await client.load_extension("cogs.deleteVouch")
-    await client.load_extension("cogs.unVouch")
-    await client.load_extension("cogs.addVouch")
-    
+    # ======= Vouches ========
+    await client.load_extension("cogs.vouch.vouch")
+    await client.load_extension("cogs.vouch.vouches")
+    await client.load_extension("cogs.vouch.getVouch")
+        # ======= Admin ========
+    await client.load_extension("cogs.vouch.aprooveVouch")
+    await client.load_extension("cogs.vouch.deleteVouch")
+    await client.load_extension("cogs.vouch.unVouch")
+    await client.load_extension("cogs.vouch.addVouch")
+
+    # ======= miscellaneous ========
+    await client.load_extension("cogs.miscellaneous.checkCode")
+    await client.load_extension("cogs.miscellaneous.capeRoles")
+
+    # ======= ticketManagement ========
+    await client.load_extension("cogs.ticketManagement.sendTicketManuall")
+
+    # ======= Groups ========
+    # await client.load_extension("cogs.mitelenius.groups")
     
 @client.event
 async def setup_hook():
