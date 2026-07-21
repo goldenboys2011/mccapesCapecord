@@ -45,7 +45,7 @@ class CapeRoles(commands.Cog):
         description="Get yourself cape roles in the server!",
     )
     async def caperole(self, interaction: discord.Interaction, java_username: str):
-        await interaction.response.defer()
+        await interaction.response.defer(ephemeral=True)
         try:
             response = requests.get(f"https://capes.me/api/user/{java_username}", headers=headers)
             
@@ -108,7 +108,7 @@ class CapeRoles(commands.Cog):
                         timestamp=datetime.datetime.now()
                     )
                     embed.set_footer(text='\u200b',icon_url=interaction.user.display_avatar.url)
-                    await interaction.followup.send(embed=embed)
+                    await interaction.followup.send(embed=embed, ephemeral=True)
         except Exception as e:
             embed = discord.Embed(
                 title="Error executing command!",
@@ -117,7 +117,7 @@ class CapeRoles(commands.Cog):
                 timestamp=datetime.datetime.now()
             )
             embed.set_footer(text='\u200b',icon_url=interaction.user.display_avatar.url)
-            await interaction.followup.send(embed=embed)
+            await interaction.followup.send(embed=embed, ephemeral=True)
         
 
 async def setup(bot):
